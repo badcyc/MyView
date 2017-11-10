@@ -36,6 +36,8 @@ public class MyView extends View {
     private int waveWidth=100;
     private int viewBottom;
     private int viewTop;
+    private Path circlePath;
+    private Path path;
     public MyView(Context context){
         this(context,null);
     }
@@ -75,6 +77,8 @@ public class MyView extends View {
         circlePaint=new Paint();
         mPaint.setAntiAlias(true);//是否抗锯齿;
 
+        circlePath=new Path();
+        path=new Path();
     }
 
     @Override
@@ -82,7 +86,6 @@ public class MyView extends View {
         super.onDraw(canvas);
 
         circlePaint.setColor(bgColor);
-        Path circlePath = new Path();
         circlePath.addCircle(widthbg / 2, heightbg / 2, widthbg / 2, Path.Direction.CW);
         canvas.clipPath(circlePath);
         canvas.drawPaint(circlePaint);
@@ -94,7 +97,6 @@ public class MyView extends View {
         mPaint.setTextSize(widthbg/10);
         canvas.drawText(String.valueOf(currentPercent),widthbg*1/2,widthbg/2,mPaint);
 
-        Path path=new Path();
         startPoint.y=(int)(heightbg-(currentPercent/100.0*heightbg));
         path.moveTo(startPoint.x,startPoint.y);
         int j=1;
@@ -112,6 +114,10 @@ public class MyView extends View {
         path.close();
         mPaint.setColor(foreColor);
         canvas.drawPath(path,mPaint);
+
+        mPaint.setColor(textColor);
+        mPaint.setTextSize(widthbg/10);
+        canvas.drawText(String.valueOf(currentPercent)+"%",widthbg*1/2,widthbg/2,mPaint);
         if (currentPercent%2==0) {
             startPoint.x += 20;
             if (startPoint.x + 100 >= 0) {
@@ -146,8 +152,8 @@ public class MyView extends View {
         widthbg=width;
         heightbg=height;
         startPoint=new Point(-400,height);
-        viewBottom=getBottom()-getPaddingBottom();
-        viewTop=getTop()+getPaddingTop();
+        //viewBottom=getBottom()-getPaddingBottom();
+        //viewTop=getTop()+getPaddingTop();
         setMeasuredDimension(width,height);
  }
  public void setCurrentPercent(final int percent){
